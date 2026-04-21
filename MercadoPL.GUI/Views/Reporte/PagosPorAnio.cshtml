@@ -1,0 +1,99 @@
+@{ ViewData["Title"] = $"Reporte Pagos {ViewBag.Anio}"; }
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h2>&#128176; Pagos de Alquiler — Año @ViewBag.Anio</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">&#8592; Volver</a>
+</div>
+
+@* ── Tarjetas resumen ─────────────────────────────── *@
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary text-center p-2">
+            <div class="fs-4 fw-bold">@ViewBag.CantidadTotal</div>
+            <div class="small">Total Pagos</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success text-center p-2">
+            @* Corregido: El casteo decimal va entre paréntesis junto con el valor *@
+            <div class="fs-4 fw-bold">S/. @(((decimal)ViewBag.TotalPagados).ToString("N2"))</div>
+            <div class="small">Cobrado (Pagados)</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-warning text-center p-2">
+            @* Corregido: El casteo decimal va entre paréntesis junto con el valor *@
+            <div class="fs-4 fw-bold text-dark">S/. @(((decimal)ViewBag.TotalPendiente).ToString("N2"))</div>
+            <div class="small text-dark">Por Cobrar (Pendientes)</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-dark text-center p-2">
+            @* Corregido: El casteo decimal va entre paréntesis junto con el valor *@
+            <div class="fs-4 fw-bold">S/. @(((decimal)ViewBag.TotalGeneral).ToString("N2"))</div>
+            <div class="small">Total General</div>
+        </div>
+    </div>
+</div>
+
+@* ── Resumen por mes ──────────────────────────────── *@
+<h5>Resumen por Mes</h5>
+<table class="table table-bordered table-sm mb-4">
+    <thead class="table-primary">
+        <tr>
+            <th>Mes</th>
+            <th class="text-end">Total (S/.)</th>
+            <th class="text-center">Pagados</th>
+            <th class="text-center">Pendientes</th>
+            <th class="text-center">Total Pagos</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in ViewBag.ResumenPorMes as dynamic[] ?? Array.Empty<dynamic>())
+        {
+            <tr>
+                <td><strong>@r.Mes</strong></td>
+                <td class="text-end">S/. @(((decimal)r.Total).ToString("N2"))</td>
+                <td class="text-center"><span class="badge bg-success">@r.Pagados</span></td>
+                <td class="text-center"><span class="badge bg-warning text-dark">@r.Pendientes</span></td>
+                <td class="text-center">@r.Cantidad</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* ── Detalle completo ─────────────────────────────── *@
+<h5>Detalle Completo</h5>
+<table class="table table-bordered table-hover table-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Puesto</th>
+            <th>Socio</th>
+            <th>Mes</th>
+            <th>Fecha Pago</th>
+            <th class="text-end">Monto (S/.)</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in ViewBag.Pagos as IEnumerable<Mercado.BL.BE.PagoAlquilerBE> ?? Enumerable.Empty<Mercado.BL.BE.PagoAlquilerBE>())
+        {
+            <tr>
+                <td>@p.IdPago</td>
+                <td><strong>@p.CodigoPuesto</strong></td>
+                <td>@p.NombreSocio</td>
+                <td>@p.Mes</td>
+                <td>@p.FechaPago.ToString("dd/MM/yyyy")</td>
+                <td class="text-end">@p.Monto.ToString("N2")</td>
+                <td>
+                    <span class="badge @(p.Estado == "Pagado" ? "bg-success" : p.Estado == "Pendiente" ? "bg-warning text-dark" : "bg-secondary")">
+                        @p.Estado
+                    </span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

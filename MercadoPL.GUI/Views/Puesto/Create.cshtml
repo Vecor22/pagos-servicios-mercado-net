@@ -1,0 +1,38 @@
+@model Mercado.BL.BE.PuestoBE
+@{
+    ViewData["Title"] = "Nuevo Puesto";
+}
+<h2>Registrar Nuevo Puesto</h2>
+<hr />
+
+<form asp-action="Create" method="post" style="max-width:500px;">
+    @Html.AntiForgeryToken()
+    <div style="margin-bottom:12px;">
+        <label><strong>Codigo:</strong></label>
+        <input name="Codigo" value="@Model?.Codigo" required placeholder="Ej: A-01"
+               style="width:100%; padding:6px; border:1px solid #ccc; margin-top:4px;" />
+    </div>
+    <div style="margin-bottom:12px;">
+        <label><strong>Sector:</strong></label>
+        <input name="Sector" value="@Model?.Sector" placeholder="Ej: Abarrotes"
+               style="width:100%; padding:6px; border:1px solid #ccc; margin-top:4px;" />
+    </div>
+    <div style="margin-bottom:12px;">
+        <label><strong>Socio:</strong></label>
+        @Html.DropDownList("IdSocio", (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.Socios,
+            "-- Sin socio --",
+            new { style = "width:100%; padding:6px; border:1px solid #ccc; margin-top:4px;" })
+    </div>
+    <div style="margin-top:16px;">
+        <button type="submit"
+                style="padding:6px 16px; background:#003366; color:#fff;
+                       border:1px solid #002244; font-size:13px; cursor:pointer;">
+            Guardar
+        </button>
+        &nbsp;
+        <a href="/Puesto" style="padding:6px 14px; background:#666; color:#fff;
+           text-decoration:none; border:1px solid #444; font-size:13px;">
+            Cancelar
+        </a>
+    </div>
+</form>

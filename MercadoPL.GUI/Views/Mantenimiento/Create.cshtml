@@ -1,0 +1,63 @@
+@model Mercado.BL.BE.MantenimientoBE
+@{ ViewData["Title"] = "Registrar Mantenimiento"; }
+
+<h2>&#128295; Registrar Gasto de Mantenimiento</h2>
+<hr />
+<div class="row"><div class="col-md-6">
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Tipo de Servicio</label>
+        <select name="Tipo" class="form-select" required>
+            <option value="">-- Seleccione --</option>
+            @foreach (var item in ViewBag.Tipos as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>())
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Descripción</label>
+        <input asp-for="Descripcion" class="form-control" placeholder="Ej: Factura Luz Enero" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Proveedor</label>
+        <input asp-for="Proveedor" class="form-control" placeholder="Ej: Enel, Sedapal..." />
+    </div>
+
+    <div class="row">
+        <div class="col mb-3">
+            <label class="form-label fw-bold">Mes</label>
+            <select name="Mes" class="form-select" required>
+                <option value="">-- Seleccione --</option>
+                @foreach (var item in ViewBag.Meses as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>())
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </div>
+        <div class="col mb-3">
+            <label class="form-label fw-bold">Año</label>
+            <input asp-for="Anio" type="number" class="form-control" min="2020" required />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Fecha</label>
+        <input asp-for="Fecha" type="date" class="form-control" required />
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label fw-bold">Monto (S/.)</label>
+        <input asp-for="Monto" type="number" step="0.01" min="0.01" class="form-control" required />
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success">&#10003; Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary">&#8592; Cancelar</a>
+    </div>
+</form>
+</div></div>

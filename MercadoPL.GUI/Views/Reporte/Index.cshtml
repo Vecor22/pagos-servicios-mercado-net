@@ -1,0 +1,38 @@
+@{ ViewData["Title"] = "Reportes"; }
+
+<h2>&#128202; Reportes del Sistema</h2>
+<hr />
+
+<div class="row mt-4">
+    <div class="col-md-5 mb-4">
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-white fw-bold">
+                &#128176; Reporte 1: Pagos de Alquiler por Año
+            </div>
+            <div class="card-body">
+                <p class="text-muted small">Muestra todos los pagos de alquiler del año seleccionado, agrupados por mes con totales y estado de pago.</p>
+                <form asp-action="PagosPorAnio" method="get" class="d-flex gap-2">
+                    <input type="number" name="anio" value="@ViewBag.Anio" min="2020" max="2099"
+                           class="form-control" style="width:110px;" />
+                    <button type="submit" class="btn btn-primary">Ver Reporte</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5 mb-4">
+        <div class="card border-success">
+            <div class="card-header bg-success text-white fw-bold">
+                &#128295; Reporte 2: Gastos de Mantenimiento por Año
+            </div>
+            <div class="card-body">
+                <p class="text-muted small">Muestra los gastos de mantenimiento (luz, agua, vigilancia, etc.) agrupados por tipo con balance ingresos vs egresos.</p>
+                <form asp-action="GastosMantenimiento" method="get" class="d-flex gap-2">
+                    <input type="number" name="anio" value="@ViewBag.Anio" min="2020" max="2099"
+                           class="form-control" style="width:110px;" />
+                    <button type="submit" class="btn btn-success">Ver Reporte</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

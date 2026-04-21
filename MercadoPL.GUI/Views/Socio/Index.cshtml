@@ -1,0 +1,72 @@
+@model List<Mercado.BL.BE.SocioBE>
+@{
+    ViewData["Title"] = "Socios";
+}
+<h2>Listado de Socios</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div style="padding:8px 12px; margin-bottom:12px; border:1px solid;
+                background-color:@(TempData["Tipo"]?.ToString() == "success" ? "#e6f4ea" : "#fdecea");
+                border-color:@(TempData["Tipo"]?.ToString() == "success" ? "#4caf50" : "#cc0000");
+                color:@(TempData["Tipo"]?.ToString() == "success" ? "#256029" : "#900");">
+        @TempData["Mensaje"]
+    </div>
+}
+
+<p>
+    <a href="/Socio/Create" style="padding:6px 14px; background:#003366; color:#fff;
+       text-decoration:none; border:1px solid #002244; font-size:13px; font-weight:bold;">
+        + Nuevo Socio
+    </a>
+</p>
+
+@if (Model == null || !Model.Any())
+{
+    <p style="color:#666; font-style:italic;">No hay socios registrados.</p>
+}
+else
+{
+    <table border="1" cellpadding="6" cellspacing="0" style="width:100%; border-collapse:collapse;">
+        <thead style="background-color:#003366; color:#fff;">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Telefono</th>
+                <th style="width:160px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model)
+            {
+                <tr style="background-color:@(Model.IndexOf(s) % 2 == 0 ? "#fff" : "#eef2f8");">
+                    <td>@s.IdSocio</td>
+                    <td>@s.Nombre</td>
+                    <td>@s.Dni</td>
+                    <td>@s.Telefono</td>
+                    <td style="text-align:center;">
+                        <a href="/Socio/Edit/@s.IdSocio"
+                           style="padding:3px 10px; background:#e8a000; color:#fff;
+                                  text-decoration:none; border:1px solid #c07800; font-size:12px;">
+                            Editar
+                        </a>
+                        &nbsp;
+                        <a href="/Socio/Delete/@s.IdSocio"
+                           style="padding:3px 10px; background:#cc0000; color:#fff;
+                                  text-decoration:none; border:1px solid #900; font-size:12px;">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr style="background:#f5f5f5;">
+                <td colspan="5" style="font-size:12px; color:#555; padding:5px 6px;">
+                    Total: <strong>@Model.Count</strong> socio(s)
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+}
