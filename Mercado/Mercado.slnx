@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Mascora.PL.GUI/Mercado.PL.GUI.csproj" />
+  <Project Path="Mascota.BL.BE/Mercado.BL.BE.csproj" />
+  <Project Path="Mercado.BL.BC/Mercado.BL.BC.csproj" />
+  <Project Path="Mercado.DL.DALC/Mercado.DL.DALC.csproj" />
+  <Project Path="Mercado.SL.WebApi/Mercado.SL.WebApi.csproj" Id="ed67f353-5a25-4f21-92d2-440112da0015" />
+</Solution>
