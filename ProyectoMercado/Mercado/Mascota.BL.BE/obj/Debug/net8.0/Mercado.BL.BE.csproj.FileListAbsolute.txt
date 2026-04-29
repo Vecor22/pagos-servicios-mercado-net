@@ -1,0 +1,11 @@
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\bin\Debug\net8.0\Mercado.BL.BE.deps.json
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\bin\Debug\net8.0\Mercado.BL.BE.dll
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\bin\Debug\net8.0\Mercado.BL.BE.pdb
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\obj\Debug\net8.0\Mercado.BL.BE.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\obj\Debug\net8.0\Mercado.BL.BE.AssemblyInfoInputs.cache
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\obj\Debug\net8.0\Mercado.BL.BE.AssemblyInfo.cs
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\obj\Debug\net8.0\Mercado.BL.BE.csproj.CoreCompileInputs.cache
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\obj\Debug\net8.0\Mercado.BL.BE.dll
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\obj\Debug\net8.0\refint\Mercado.BL.BE.dll
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\obj\Debug\net8.0\Mercado.BL.BE.pdb
+C:\Users\Otar22\source\repos\Mercado\Mascota.BL.BE\obj\Debug\net8.0\ref\Mercado.BL.BE.dll

@@ -1,0 +1,15 @@
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\bin\Debug\net8.0\Mercado.DL.DALC.deps.json
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\bin\Debug\net8.0\Mercado.DL.DALC.dll
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\bin\Debug\net8.0\Mercado.DL.DALC.pdb
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\bin\Debug\net8.0\Mercado.BL.BE.dll
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\bin\Debug\net8.0\Mercado.BL.BE.pdb
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\Mercado.DL.DALC.csproj.AssemblyReference.cache
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\Mercado.DL.DALC.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\Mercado.DL.DALC.AssemblyInfoInputs.cache
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\Mercado.DL.DALC.AssemblyInfo.cs
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\Mercado.DL.DALC.csproj.CoreCompileInputs.cache
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\Mercado..7268EF49.Up2Date
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\Mercado.DL.DALC.dll
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\refint\Mercado.DL.DALC.dll
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\Mercado.DL.DALC.pdb
+C:\Users\Otar22\source\repos\Mercado\Mercado.DL.DALC\obj\Debug\net8.0\ref\Mercado.DL.DALC.dll
