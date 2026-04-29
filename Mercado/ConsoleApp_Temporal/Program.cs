@@ -1,0 +1,15 @@
+﻿using System.Security.Cryptography;
+using System.Text;
+
+string password = "Admin01@";
+
+using (SHA256 sha = SHA256.Create())
+{
+    byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
+    StringBuilder sb = new StringBuilder();
+
+    foreach (var b in bytes)
+        sb.Append(b.ToString("x2"));
+
+    Console.WriteLine(sb.ToString());
+}

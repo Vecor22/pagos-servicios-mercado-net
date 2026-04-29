@@ -1,0 +1,52 @@
+﻿@model Mercado.PL.GUI.DTO.Request.UsuarioRequest
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+    var roles = ViewBag.Roles as List<Mercado.BL.BE.RolBE>;
+}
+
+<h2 class="mb-4">Editar Usuario</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Editar" method="post" class="card p-4 shadow-sm">
+    <input type="hidden" name="id" value="@ViewBag.UsuarioID" />
+
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input asp-for="Username" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Nombre Completo</label>
+        <input asp-for="NombreCompleto" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Foto URL</label>
+        <input asp-for="FotoUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Rol</label>
+        <select asp-for="RolID" class="form-select" required>
+            <option value="">-- Seleccione --</option>
+            @foreach (var rol in roles)
+            {
+                <option value="@rol.RolID" selected="@(rol.RolID == Model.RolID)">
+                    @rol.Nombre
+                </option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>

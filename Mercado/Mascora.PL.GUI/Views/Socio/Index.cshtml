@@ -1,0 +1,67 @@
+@model List<Mercado.PL.GUI.DTO.Response.SocioResponse>
+
+@{
+    ViewData["Title"] = "Socios";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Socios</h2>
+            <a asp-action="Crear" class="btn btn-primary">Nuevo Socio</a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Código</th>
+                                <th>Nombres</th>
+                                <th>DNI</th>
+                                <th>Correo</th>
+                                <th>Teléfono</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var socio in Model)
+                            {
+                                <tr>
+                                    <td>@socio.SocioID</td>
+                                    <td>@socio.CodigoSocio</td>
+                                    <td>@socio.NombreCompleto</td>
+                                    <td>@socio.Dni</td>
+                                    <td>@(string.IsNullOrWhiteSpace(socio.Correo) ? "-" : socio.Correo)</td>
+                                    <td>@(string.IsNullOrWhiteSpace(socio.Telefono) ? "-" : socio.Telefono)</td>
+                                    <td>
+                                        <span class="badge @(socio.Estado == "ACTIVO" ? "bg-success" : "bg-secondary")">
+                                            @socio.Estado
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a asp-action="Editar" asp-route-id="@socio.SocioID" class="btn btn-warning btn-sm">Editar</a>
+
+                                            @if (socio.Estado == "ACTIVO")
+                                            {
+                                                <a asp-action="CambiarEstado" asp-route-id="@socio.SocioID" asp-route-estado="INACTIVO" class="btn btn-danger btn-sm">Desactivar</a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="CambiarEstado" asp-route-id="@socio.SocioID" asp-route-estado="ACTIVO" class="btn btn-primary btn-sm">Activar</a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="ConsoleApp_Temporal/ConsoleApp_Temporal.csproj" Id="bac49100-ed82-4212-a34d-688b24b2f8a4" />
   <Project Path="Mascora.PL.GUI/Mercado.PL.GUI.csproj" />
   <Project Path="Mascota.BL.BE/Mercado.BL.BE.csproj" />
   <Project Path="Mercado.BL.BC/Mercado.BL.BC.csproj" />

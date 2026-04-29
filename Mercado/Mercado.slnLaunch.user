@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "Mascora.PL.GUI\\Mercado.PL.GUI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Mercado.SL.WebApi\\Mercado.SL.WebApi.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

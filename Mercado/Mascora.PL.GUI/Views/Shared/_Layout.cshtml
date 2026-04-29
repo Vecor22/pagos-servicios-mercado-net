@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Sistema</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Sistema Mercado</a>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Puesto" asp-action="Index">Puestos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="ConceptoCobro" asp-action="Index">Conceptos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="SocioPuesto" asp-action="Index">Socio-Puesto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Deuda" asp-action="Index">Deudas</a>
+                    </li>
+
+                    @if (Context.Session.GetString("Rol") == "ADMINISTRADOR")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Rol" asp-action="Index">Roles</a>
+                        </li>
+                    }
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Socio" asp-action="Index">Socios</a>
+                    </li>
+
+                    @if (Context.Session.GetString("Rol") == "ADMINISTRADOR")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Usuario" asp-action="Index">Usuarios</a>
+                        </li>
+                    }
+                </ul>
+
+                <span class="navbar-text text-white me-3">
+                    @Context.Session.GetString("NombreCompleto")
+                </span>
+
+                <a class="btn btn-danger" asp-controller="Login" asp-action="Logout">Salir</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        @RenderBody()
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

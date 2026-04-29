@@ -1,75 +1,104 @@
-﻿//using Mercado.BL.BC;
-//using Mercado.BL.BE;
-//using Microsoft.AspNetCore.Mvc;
+﻿using Mercado.BL.BE;
+using Mercado.PL.GUI.DTO.Request;
+using Mercado.PL.GUI.DTO.Response;
+using Mercado.PL.GUI.Filters;
+using Mercado.PL.GUI.Models;
+using Microsoft.AspNetCore.Mvc;
 
-//namespace Mercado.PL.GUI.Controllers
-//{
-//    public class RolController : Controller
-//    {
-//        private readonly RolBC rolBC = new RolBC();
+namespace Mercado.PL.GUI.Controllers
+{
+    [RolAutorizado("ADMINISTRADOR")]
+    public class RolController : Controller
+    {
+        private readonly RolModel rolModel = new RolModel();
 
-//        // GET: api/rol
-//        [HttpGet]
-//        public IActionResult Listar()
-//        {
-//            try
-//            {
-//                var lista = rolBC.Listar();
-//                return Ok(lista);
-//            }
-//            catch (Exception ex)
-//            {
-//                return StatusCode(500, ex.Message);
-//            }
-//        }
+        public IActionResult Index()
+        {
+            var roles = rolModel.Listar()
+                .Select(r => new RolResponse
+                {
+                    RolID = r.RolID,
+                    Nombre = r.Nombre,
+                    Descripcion = r.Descripcion,
+                    Activo = r.Activo,
+                    FechaCreacion = r.FechaCreacion,
+                    FechaActualizacion = r.FechaActualizacion
+                })
+                .ToList();
 
-//        // GET: api/rol/5
-//        [HttpGet("{id}")]
-//        public IActionResult BuscarPorId(long id)
-//        {
-//            try
-//            {
-//                var rol = rolBC.BuscarPorId(id);
+            return View(roles);
+        }
 
-//                if (rol == null)
-//                    return NotFound("Rol no encontrado.");
+        public IActionResult Crear()
+        {
+            return View();
+        }
 
-//                return Ok(rol);
-//            }
-//            catch (Exception ex)
-//            {
-//                return StatusCode(500, ex.Message);
-//            }
-//        }
+        [HttpPost]
+        public IActionResult Crear(RolRequest request)
+        {
+            try
+            {
+                RolBE rol = new RolBE
+                {
+                    Nombre = request.Nombre,
+                    Descripcion = request.Descripcion
+                };
 
-//        // POST: api/rol
-//        [HttpPost]
-//        public IActionResult Crear([FromBody] RolBE rol)
-//        {
-//            try
-//            {
-//                rolBC.Crear(rol);
-//                return Ok("Rol creado correctamente.");
-//            }
-//            catch (Exception ex)
-//            {
-//                return BadRequest(ex.Message);
-//            }
-//        }
+                rolModel.Crear(rol);
 
-//        // PUT: api/rol
-//        [HttpPut]
-//        public IActionResult Actualizar([FromBody] RolBE rol)
-//        {
-//            try
-//            {
-//                rolBC.Actualizar(rol);
-//                return Ok("Rol actualizado correctamente.");
-//            }
-//            catch (Exception ex)
-//            {
-//                return BadRequest(ex.Message);
-//            }
-//        }
-//    }
-//}
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View(request);
+            }
+        }
+
+        public IActionResult Editar(long id)
+        {
+            var rol = rolModel.BuscarPorId(id);
+
+            if (rol == null)
+                return NotFound();
+
+            var request = new RolRequest
+            {
+                Nombre = rol.Nombre,
+                Descripcion = rol.Descripcion
+            };
+
+            ViewBag.RolID = rol.RolID;
+            ViewBag.Activo = rol.Activo;
+
+            return View(request);
+        }
+
+        [HttpPost]
+        public IActionResult Editar(long id, RolRequest request, bool activo)
+        {
+            try
+            {
+                RolBE rol = new RolBE
+                {
+                    RolID = id,
+                    Nombre = request.Nombre,
+                    Descripcion = request.Descripcion,
+                    Activo = activo
+                };
+
+                rolModel.Actualizar(rol);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                ViewBag.RolID = id;
+                ViewBag.Activo = activo;
+                return View(request);
+            }
+        }
+    }
+}

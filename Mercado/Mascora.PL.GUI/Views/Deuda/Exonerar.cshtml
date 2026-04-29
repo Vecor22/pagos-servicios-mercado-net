@@ -1,0 +1,51 @@
+@model Mercado.PL.GUI.DTO.Request.DeudaExonerarRequest
+
+@{
+    ViewData["Title"] = "Exonerar Deuda";
+    var deudasPendientes = ViewBag.DeudasPendientes as List<Mercado.BL.BE.DeudaBE>;
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">Exonerar Deuda</h2>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <form asp-action="Exonerar" method="post">
+                    <div class="mb-3">
+                        <label asp-for="DeudaID" class="form-label">Deuda</label>
+                        <select asp-for="DeudaID" class="form-select">
+                            <option value="">-- Seleccione una deuda pendiente --</option>
+                            @if (deudasPendientes != null)
+                            {
+                                @foreach (var deuda in deudasPendientes)
+                                {
+                                    <option value="@deuda.DeudaID">
+                                        @($"{deuda.CodigoDeuda} - {deuda.ConceptoCobro?.Nombre} - {deuda.Monto:0.00}")
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Motivo" class="form-label">Motivo</label>
+                        <input asp-for="Motivo" class="form-control" />
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-warning">Exonerar</button>
+                        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

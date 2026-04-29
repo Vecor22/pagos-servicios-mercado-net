@@ -1,0 +1,59 @@
+@model List<Mercado.PL.GUI.DTO.Response.ConceptoCobroResponse>
+
+@{
+    ViewData["Title"] = "Conceptos de Cobro";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Conceptos de Cobro</h2>
+            <a asp-action="Crear" class="btn btn-primary">Nuevo Concepto</a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ConceptoCobroID</th>
+                                <th>Nombre</th>
+                                <th>Descripcion</th>
+                                <th>TipoCobro</th>
+                                <th>FechaCreacion</th>
+                                <th>FechaActualizacion</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var concepto in Model)
+                                {
+                                    <tr>
+                                        <td>@concepto.ConceptoCobroID</td>
+                                        <td>@concepto.Nombre</td>
+                                        <td>@(string.IsNullOrWhiteSpace(concepto.Descripcion) ? "-" : concepto.Descripcion)</td>
+                                        <td>@concepto.TipoCobro</td>
+                                        <td>@concepto.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@(concepto.FechaActualizacion.HasValue ? concepto.FechaActualizacion.Value.ToString("dd/MM/yyyy HH:mm") : "-")</td>
+                                        <td>
+                                            <a asp-action="Editar" asp-route-id="@concepto.ConceptoCobroID" class="btn btn-warning btn-sm">Editar</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="7" class="text-center">No hay conceptos registrados.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

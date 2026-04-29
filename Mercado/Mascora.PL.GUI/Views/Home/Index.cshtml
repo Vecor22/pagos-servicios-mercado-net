@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">Bienvenido al sistema</h2>
+
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded p-3 h-100">
+                            <span class="text-muted d-block mb-1">Usuario</span>
+                            <strong>@Context.Session.GetString("NombreCompleto")</strong>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded p-3 h-100">
+                            <span class="text-muted d-block mb-1">Rol</span>
+                            <strong>@Context.Session.GetString("Rol")</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a class="btn btn-danger" asp-controller="Login" asp-action="Logout">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

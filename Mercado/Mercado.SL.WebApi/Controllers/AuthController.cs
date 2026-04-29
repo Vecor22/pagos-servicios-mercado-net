@@ -2,6 +2,7 @@
 using Mercado.SL.WebApi.DTO.Request;
 using Mercado.SL.WebApi.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
+using Mercado.SL.WebApi.Helpers;
 
 namespace Mercado.SL.WebApi.Controllers
 {
@@ -22,8 +23,9 @@ namespace Mercado.SL.WebApi.Controllers
                 if (usuario == null)
                     return Unauthorized("Usuario no encontrado.");
 
-                // Aquí deberías validar el password (hash)
-                if (usuario.PasswordHash != request.Password)
+                var hash = PasswordHelper.HashPassword(request.Password);
+
+                if (usuario.PasswordHash != hash)
                     return Unauthorized("Credenciales incorrectas.");
 
                 var response = new LoginResponse

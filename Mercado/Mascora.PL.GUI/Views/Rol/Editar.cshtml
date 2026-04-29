@@ -1,0 +1,46 @@
+@model Mercado.PL.GUI.DTO.Request.RolRequest
+
+@{
+    ViewData["Title"] = "Editar Rol";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">Editar Rol</h2>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <form asp-action="Editar" method="post">
+                    <input type="hidden" name="id" value="@ViewBag.RolID" />
+
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label">Nombre</label>
+                        <input asp-for="Nombre" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Descripcion" class="form-label">Descripción</label>
+                        <input asp-for="Descripcion" class="form-control" />
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="activo" name="activo" value="true" @(ViewBag.Activo ? "checked" : "") />
+                        <label class="form-check-label" for="activo">Activo</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
