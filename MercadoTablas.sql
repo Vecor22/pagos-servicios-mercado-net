@@ -145,7 +145,7 @@ CREATE TABLE Pago (
     fecha_anulacion DATETIME2 NULL,
     motivo_anulacion VARCHAR(255) NULL,
 
-    deuda_id BIGINT NOT NULL UNIQUE,
+    deuda_id BIGINT NOT NULL,
     registrado_por_usuario_id BIGINT NOT NULL,
     anulado_por_usuario_id BIGINT NULL,
 

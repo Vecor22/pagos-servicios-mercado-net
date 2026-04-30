@@ -13,8 +13,13 @@ namespace Mercado.PL.GUI.DTO.Response
 
         public string CodigoPago { get; set; }
         public decimal MontoPagado { get; set; }
+        public string MedioPago { get; set; }
+        public string? NumeroOperacion { get; set; }
+        public DateTime FechaPago { get; set; }
         public string CodigoDeuda { get; set; }
         public string? CodigoPuesto { get; set; }
         public string? Socio { get; set; }
+        public string? RegistradoPor { get; set; }
+        public string? AnuladoPor { get; set; }
     }
 }

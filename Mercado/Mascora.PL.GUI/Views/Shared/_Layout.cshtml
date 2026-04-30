@@ -27,6 +27,12 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Deuda" asp-action="Index">Deudas</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Pago" asp-action="Index">Pagos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Reporte" asp-action="ResumenDeudas">Reportes</a>
+                    </li>
 
                     @if (Context.Session.GetString("Rol") == "ADMINISTRADOR")
                     {

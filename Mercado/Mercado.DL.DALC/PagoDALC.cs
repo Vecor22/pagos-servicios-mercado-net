@@ -12,6 +12,7 @@ namespace Mercado.DL.DALC
         private const string SpBuscarPorCodigoDeuda = "usp_Pago_BuscarPorCodigoDeuda";
         private const string SpListarPorCodigoPuesto = "usp_Pago_ListarPorCodigoPuesto";
         private const string SpListarPorFechas = "usp_Pago_ListarPorFechas";
+        private const string SpListarPorEstado = "usp_Pago_ListarPorEstado";
         private const string SpCrear = "usp_Pago_Crear";
         private const string SpAnular = "usp_Pago_Anular";
 
@@ -134,6 +135,30 @@ namespace Mercado.DL.DALC
 
             return lista;
         }
+
+
+        public List<PagoBE> ListarPorEstado(string estado)
+        {
+            List<PagoBE> lista = new List<PagoBE>();
+
+            using (SqlConnection cn = Conexion.getConnection())
+            using (SqlCommand cmd = new SqlCommand(SpListarPorEstado, cn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@estado", estado);
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        lista.Add(Mapear(dr));
+                    }
+                }
+            }
+
+            return lista;
+        }
+
 
         public void Crear(string codigoDeuda, string medioPago, string? numeroOperacion, long usuarioId)
         {

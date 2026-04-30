@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Exonerar Deuda";
-    var deudasPendientes = ViewBag.DeudasPendientes as List<Mercado.BL.BE.DeudaBE>;
+    var deuda = ViewBag.Deuda as Mercado.PL.GUI.DTO.Response.DeudaResponse;
 }
 
 <div class="row justify-content-center">
@@ -18,33 +18,65 @@
                     </div>
                 }
 
-                <form asp-action="Exonerar" method="post">
-                    <div class="mb-3">
-                        <label asp-for="DeudaID" class="form-label">Deuda</label>
-                        <select asp-for="DeudaID" class="form-select">
-                            <option value="">-- Seleccione una deuda pendiente --</option>
-                            @if (deudasPendientes != null)
-                            {
-                                @foreach (var deuda in deudasPendientes)
-                                {
-                                    <option value="@deuda.DeudaID">
-                                        @($"{deuda.CodigoDeuda} - {deuda.ConceptoCobro?.Nombre} - {deuda.Monto:0.00}")
-                                    </option>
-                                }
-                            }
-                        </select>
+                @if (deuda != null)
+                {
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered align-middle mb-0">
+                            <tbody>
+                                <tr>
+                                    <th class="table-light w-25">CodigoDeuda</th>
+                                    <td>@deuda.CodigoDeuda</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">Monto</th>
+                                    <td>@deuda.Monto.ToString("0.00")</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">Estado</th>
+                                    <td>@deuda.Estado</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">TipoGeneracion</th>
+                                    <td>@deuda.TipoGeneracion</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">Concepto</th>
+                                    <td>@deuda.Concepto</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">CodigoPuesto</th>
+                                    <td>@(string.IsNullOrWhiteSpace(deuda.CodigoPuesto) ? "-" : deuda.CodigoPuesto)</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">Socio</th>
+                                    <td>@(string.IsNullOrWhiteSpace(deuda.Socio) ? "-" : deuda.Socio)</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">Observacion</th>
+                                    <td>@(string.IsNullOrWhiteSpace(deuda.Observacion) ? "-" : deuda.Observacion)</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">FechaGeneracion</th>
+                                    <td>@deuda.FechaGeneracion.ToString("dd/MM/yyyy HH:mm")</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div class="mb-4">
-                        <label asp-for="Motivo" class="form-label">Motivo</label>
-                        <input asp-for="Motivo" class="form-control" />
-                    </div>
+                    <form asp-action="Exonerar" method="post">
+                        <input asp-for="DeudaID" type="hidden" />
 
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-warning">Exonerar</button>
-                        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-                    </div>
-                </form>
+                        <div class="mb-4">
+                            <label asp-for="Motivo" class="form-label">Motivo</label>
+                            <input asp-for="Motivo" class="form-control" maxlength="255" />
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-warning">Exonerar</button>
+                            <a asp-action="Detalle" asp-route-id="@Model.DeudaID" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                }
             </div>
         </div>
     </div>

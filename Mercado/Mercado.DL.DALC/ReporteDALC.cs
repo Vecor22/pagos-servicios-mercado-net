@@ -15,6 +15,7 @@ namespace Mercado.DL.DALC
         private const string SpResumenIngresosAnio = "usp_Reporte_ResumenIngresosAnio";
         private const string SpResumenIngresosEntreFechas = "usp_Reporte_ResumenIngresosEntreFechas";
         private const string SpResumenDeudas = "usp_Reporte_ResumenDeudas";
+        private const string SpResumenDeudasEntreFechas = "usp_Reporte_ResumenDeudasEntreFechas";
         private const string SpDeudasPorEstado = "usp_Reporte_DeudasPorEstado";
         private const string SpDeudasPorEstadoEntreFechas = "usp_Reporte_DeudasPorEstadoEntreFechas";
 
@@ -69,6 +70,17 @@ namespace Mercado.DL.DALC
             };
 
             return EjecutarConsulta(SpDeudasPorEstadoEntreFechas, parametros);
+        }
+
+        public DataTable ResumenDeudasEntreFechas(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlParameter[] parametros =
+            {
+                new SqlParameter("@fecha_inicio", fechaInicio.Date),
+                new SqlParameter("@fecha_fin", fechaFin.Date)
+            };
+
+            return EjecutarConsulta(SpResumenDeudasEntreFechas, parametros);
         }
 
         private static DataTable EjecutarConsulta(string nombreProcedimiento, SqlParameter[]? parametros = null)

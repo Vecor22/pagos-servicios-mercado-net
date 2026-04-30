@@ -35,6 +35,14 @@ namespace Mercado.BL.BC
             return reporteDALC.ResumenDeudas();
         }
 
+        public DataTable ResumenDeudasEntreFechas(DateTime fechaInicio, DateTime fechaFin)
+        {
+            if (fechaInicio > fechaFin)
+                throw new Exception("La fecha de inicio no puede ser mayor que la fecha fin.");
+
+            return reporteDALC.ResumenDeudasEntreFechas(fechaInicio, fechaFin);
+        }
+
         public DataTable DeudasPorEstado(string estado)
         {
             if (string.IsNullOrWhiteSpace(estado))

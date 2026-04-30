@@ -1296,11 +1296,6 @@ GO
 
 
 
-
-
-USE MercadoDB;
-GO
-
 /* =========================================================
    DEUDA - BUSCAR POR ID
 ========================================================= */
@@ -1362,6 +1357,10 @@ END;
 GO
 
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+/* =========================================================
+   PAGO
+========================================================= */
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -1483,6 +1482,39 @@ BEGIN
 END;
 GO
 
+
+/* =========================================================
+   PAGO - LISTAR POR FECHAS
+========================================================= */
+
+CREATE OR ALTER PROCEDURE usp_Pago_ListarPorEstado
+    @estado VARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        p.pago_id,
+        p.codigo_pago,
+        d.codigo_deuda,
+        pu.codigo_puesto,
+        CONCAT(s.nombres,' ',s.apellidos) AS socio,
+        p.monto_pagado,
+        p.medio_pago,
+        p.numero_operacion,
+        p.estado,
+        p.fecha_pago
+    FROM Pago p
+    INNER JOIN Deuda d ON p.deuda_id = d.deuda_id
+    LEFT JOIN Puesto pu ON d.puesto_id = pu.puesto_id
+    LEFT JOIN Socio s ON d.socio_id = s.socio_id
+    WHERE p.estado = @estado
+    ORDER BY p.fecha_pago DESC;
+END;
+GO
+
+----------------------------------------------------------------------
+
 /* =========================================================
    PAGO - CREAR
    ✔ Solo deudas PENDIENTE
@@ -1549,7 +1581,8 @@ BEGIN
         COMMIT;
     END TRY
     BEGIN CATCH
-        ROLLBACK;
+		IF @@TRANCOUNT > 0
+			ROLLBACK;
         THROW;
     END CATCH
 END;
@@ -1757,10 +1790,12 @@ GO
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-USE MercadoDB;
-GO
+
 
 /* =========================================================
    REPORTE - RESUMEN INGRESOS DEL DÍA
@@ -1833,6 +1868,12 @@ BEGIN
 END;
 GO
 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------- NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO SE INCLUYE------------------------------------------
 /* =========================================================
    REPORTE - RESUMEN DE DEUDAS
 ========================================================= */
@@ -1854,6 +1895,11 @@ BEGIN
 END;
 GO
 
+
+
+
+
+----------------- PROCEDIMIENTO ALMACENADO QUE SE INCLUIRÁ---------------------------
 /* =========================================================
    REPORTE - DEUDAS POR ESTADO ENTRE FECHAS
 ========================================================= */
@@ -1888,6 +1934,59 @@ BEGIN
     GROUP BY estado;
 END;
 GO
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+----------- SIIIIIIIIIIIIII VAAAAAAAAAAAAAAAAA ------------------------------
+
+CREATE OR ALTER PROCEDURE usp_Reporte_ResumenDeudasEntreFechas 
+    @fecha_inicio DATE,
+    @fecha_fin DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @total_pagable_monto DECIMAL(10,2);
+    DECLARE @total_pagable_cantidad INT;
+
+    SELECT
+        @total_pagable_monto = ISNULL(SUM(monto), 0),
+        @total_pagable_cantidad = COUNT(*)
+    FROM Deuda
+    WHERE estado IN ('PENDIENTE', 'PAGADA')
+      AND CAST(fecha_generacion AS DATE) BETWEEN @fecha_inicio AND @fecha_fin;
+
+    SELECT
+        @total_pagable_monto AS total_pagable_monto,
+        @total_pagable_cantidad AS total_pagable_cantidad,
+        CAST(100.00 AS DECIMAL(10,2)) AS total_pagable_porcentaje,
+
+        ISNULL(SUM(CASE WHEN estado = 'PENDIENTE' THEN monto ELSE 0 END), 0) AS pendiente_monto,
+        SUM(CASE WHEN estado = 'PENDIENTE' THEN 1 ELSE 0 END) AS pendiente_cantidad,
+        CAST(
+            SUM(CASE WHEN estado = 'PENDIENTE' THEN 1 ELSE 0 END) * 100.0 
+            / NULLIF(@total_pagable_cantidad, 0)
+            AS DECIMAL(10,2)
+        ) AS pendiente_porcentaje,
+
+        ISNULL(SUM(CASE WHEN estado = 'PAGADA' THEN monto ELSE 0 END), 0) AS pagada_monto,
+        SUM(CASE WHEN estado = 'PAGADA' THEN 1 ELSE 0 END) AS pagada_cantidad,
+        CAST(
+            SUM(CASE WHEN estado = 'PAGADA' THEN 1 ELSE 0 END) * 100.0 
+            / NULLIF(@total_pagable_cantidad, 0)
+            AS DECIMAL(10,2)
+        ) AS pagada_porcentaje,
+
+        SUM(CASE WHEN estado = 'EXONERADA' THEN 1 ELSE 0 END) AS exonerada_cantidad,
+        SUM(CASE WHEN estado = 'DISTRIBUIDA' THEN 1 ELSE 0 END) AS distribuida_cantidad
+    FROM Deuda
+    WHERE CAST(fecha_generacion AS DATE) BETWEEN @fecha_inicio AND @fecha_fin;
+END;
+GO
+
 
 
 ---------------------------------------------------------------------
@@ -1912,6 +2011,13 @@ BEGIN
     GROUP BY estado;
 END;
 GO
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------

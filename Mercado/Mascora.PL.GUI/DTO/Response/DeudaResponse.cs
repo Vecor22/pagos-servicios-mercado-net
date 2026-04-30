@@ -16,5 +16,7 @@ namespace Mercado.PL.GUI.DTO.Response
 
         public DateTime? FechaExoneracion { get; set; }
         public string? MotivoExoneracion { get; set; }
+        public string? UsuarioGeneracion { get; set; }
+        public string? UsuarioExoneracion { get; set; }
     }
 }

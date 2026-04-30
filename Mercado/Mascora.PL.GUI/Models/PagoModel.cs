@@ -27,6 +27,11 @@ namespace Mercado.PL.GUI.Models
             return pagoBC.BuscarPorCodigoDeuda(codigoDeuda);
         }
 
+        public List<PagoBE> ListarPorEstado(string estado)
+        {
+            return pagoBC.ListarPorEstado(estado);
+        }
+
         public List<PagoBE> ListarPorCodigoPuesto(string codigoPuesto)
         {
             return pagoBC.ListarPorCodigoPuesto(codigoPuesto);

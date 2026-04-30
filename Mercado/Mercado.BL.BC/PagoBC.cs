@@ -33,6 +33,14 @@ namespace Mercado.BL.BC
             return pagoDALC.BuscarPorCodigoDeuda(codigoDeuda);
         }
 
+        public List<PagoBE> ListarPorEstado(string estado)
+        {
+            if (string.IsNullOrWhiteSpace(estado))
+                throw new Exception("El estado es obligatorio.");
+
+            return pagoDALC.ListarPorEstado(estado);
+        }
+
         public List<PagoBE> ListarPorCodigoPuesto(string codigoPuesto)
         {
             if (string.IsNullOrWhiteSpace(codigoPuesto))

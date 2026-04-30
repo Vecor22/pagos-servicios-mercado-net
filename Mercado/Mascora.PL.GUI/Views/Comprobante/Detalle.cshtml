@@ -1,0 +1,94 @@
+@model Mercado.PL.GUI.DTO.Response.ComprobanteResponse
+
+@{
+    ViewData["Title"] = "Detalle de Comprobante";
+    var badgeClass = Model.Estado == "EMITIDO"
+        ? "bg-success"
+        : Model.Estado == "ANULADO"
+            ? "bg-danger"
+            : "bg-secondary";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="card-title mb-0">Detalle de Comprobante</h2>
+                    <a asp-controller="Pago" asp-action="Index" class="btn btn-secondary">Volver a Pagos</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="table-light w-25">NumeroComprobante</th>
+                                <td>@Model.NumeroComprobante</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">TipoComprobante</th>
+                                <td>@Model.TipoComprobante</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">Estado</th>
+                                <td><span class="badge @badgeClass">@Model.Estado</span></td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">FechaEmision</th>
+                                <td>@Model.FechaEmision.ToString("dd/MM/yyyy HH:mm")</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">FechaAnulacion</th>
+                                <td>@(Model.FechaAnulacion.HasValue ? Model.FechaAnulacion.Value.ToString("dd/MM/yyyy HH:mm") : "-")</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">MotivoAnulacion</th>
+                                <td>@(string.IsNullOrWhiteSpace(Model.MotivoAnulacion) ? "-" : Model.MotivoAnulacion)</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">CodigoPago</th>
+                                <td>@Model.CodigoPago</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">CodigoDeuda</th>
+                                <td>@Model.CodigoDeuda</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">CodigoPuesto</th>
+                                <td>@(string.IsNullOrWhiteSpace(Model.CodigoPuesto) ? "-" : Model.CodigoPuesto)</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">Nombre del socio</th>
+                                <td>@(string.IsNullOrWhiteSpace(Model.Socio) ? "-" : Model.Socio)</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">MontoPagado</th>
+                                <td>@Model.MontoPagado.ToString("0.00")</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">MedioPago</th>
+                                <td>@Model.MedioPago</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">NumeroOperacion</th>
+                                <td>@(string.IsNullOrWhiteSpace(Model.NumeroOperacion) ? "-" : Model.NumeroOperacion)</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">FechaPago</th>
+                                <td>@Model.FechaPago.ToString("dd/MM/yyyy HH:mm")</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">RegistradoPor</th>
+                                <td>@(string.IsNullOrWhiteSpace(Model.RegistradoPor) ? "-" : Model.RegistradoPor)</td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">AnuladoPor</th>
+                                <td>@(string.IsNullOrWhiteSpace(Model.AnuladoPor) ? "-" : Model.AnuladoPor)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
