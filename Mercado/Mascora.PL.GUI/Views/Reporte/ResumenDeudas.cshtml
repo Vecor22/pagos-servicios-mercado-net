@@ -1,0 +1,175 @@
+@model Mercado.PL.GUI.DTO.Response.ReporteResumenDeudasResponse
+
+@{
+    ViewData["Title"] = "Resumen de Deudas";
+    var reporteIngresos = ViewBag.ReporteIngresos as Mercado.PL.GUI.DTO.Response.ReporteResponse;
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h2 class="mb-0">Reportes de Ingresos</h2>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.ErrorIngresos != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.ErrorIngresos
+                        </div>
+                    }
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <form asp-action="ResumenIngresosDia" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-primary w-100">Resumen Ingresos del Dia</button>
+                            </form>
+                        </div>
+                        <div class="col-md-4">
+                            <form asp-action="ResumenIngresosMes" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-primary w-100">Resumen Ingresos del Mes</button>
+                            </form>
+                        </div>
+                        <div class="col-md-4">
+                            <form asp-action="ResumenIngresosAnio" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-primary w-100">Resumen Ingresos del Año</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <form asp-action="ResumenIngresosEntreFechas" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" name="fechaInicioIngresos" class="form-control" value="@ViewBag.FechaInicioIngresos" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Fecha Fin</label>
+                                <input type="date" name="fechaFinIngresos" class="form-control" value="@ViewBag.FechaFinIngresos" required />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100">Resumen Ingresos entre Fechas</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            @if (reporteIngresos != null)
+            {
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <h3 class="mb-3">@ViewBag.TituloReporteIngresos</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center">Total Ingresos</div>
+                            <div class="card-body text-center">
+                                <div class="display-6">@reporteIngresos.TotalIngresos.ToString("0.00")</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center">Cantidad de Pagos</div>
+                            <div class="card-body text-center">
+                                <div class="display-6">@reporteIngresos.CantidadPagos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h2 class="mb-0">Resumen de Deudas entre Fechas</h2>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+                    <form asp-action="ResumenDeudas" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" name="fechaInicio" class="form-control" value="@ViewBag.FechaInicio" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Fecha Fin</label>
+                                <input type="date" name="fechaFin" class="form-control" value="@ViewBag.FechaFin" required />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100">Generar Reporte</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            @if (Model != null)
+            {
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center">Total Pagable (100%)</div>
+                            <div class="card-body text-center">
+                                <div class="display-6">@Model.TotalPagableMonto.ToString("0.00")</div>
+                                <div>Cantidad: @Model.TotalPagableCantidad</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center">Pendientes</div>
+                            <div class="card-body text-center">
+                                <div class="display-6">@Model.PendienteMonto.ToString("0.00")</div>
+                                <div>Cantidad: @Model.PendienteCantidad</div>
+                                <div>Porcentaje: @Model.PendientePorcentaje.ToString("0.##")%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center">Pagadas</div>
+                            <div class="card-body text-center">
+                                <div class="display-6">@Model.PagadaMonto.ToString("0.00")</div>
+                                <div>Cantidad: @Model.PagadaCantidad</div>
+                                <div>Porcentaje: @Model.PagadaPorcentaje.ToString("0.##")%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center">Exoneradas</div>
+                            <div class="card-body text-center">
+                                <div class="display-6">@Model.ExoneradaCantidad</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center">Distribuidas</div>
+                            <div class="card-body text-center">
+                                <div class="display-6">@Model.DistribuidaCantidad</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

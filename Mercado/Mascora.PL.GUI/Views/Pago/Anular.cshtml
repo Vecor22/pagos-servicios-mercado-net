@@ -1,0 +1,89 @@
+@model Mercado.PL.GUI.DTO.Request.PagoAnularRequest
+@using Mercado.PL.GUI.DTO.Response
+
+@{
+    ViewData["Title"] = "Anular Pago";
+    var pago = ViewBag.Pago as PagoResponse;
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-9">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">Anular Pago</h2>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                @if (pago != null)
+                {
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered align-middle mb-0">
+                            <tbody>
+                                <tr>
+                                    <th class="table-light w-25">CodigoPago</th>
+                                    <td>@pago.CodigoPago</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">CodigoDeuda</th>
+                                    <td>@pago.CodigoDeuda</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">Concepto</th>
+                                    <td>@(string.IsNullOrWhiteSpace(pago.Concepto) ? "-" : pago.Concepto)</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">CodigoPuesto</th>
+                                    <td>@(string.IsNullOrWhiteSpace(pago.CodigoPuesto) ? "-" : pago.CodigoPuesto)</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">Socio</th>
+                                    <td>@(string.IsNullOrWhiteSpace(pago.Socio) ? "-" : pago.Socio)</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">MontoPagado</th>
+                                    <td>@pago.MontoPagado.ToString("0.00")</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">MedioPago</th>
+                                    <td>@pago.MedioPago</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">NumeroOperacion</th>
+                                    <td>@(string.IsNullOrWhiteSpace(pago.NumeroOperacion) ? "-" : pago.NumeroOperacion)</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">FechaPago</th>
+                                    <td>@pago.FechaPago.ToString("dd/MM/yyyy HH:mm")</td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light">Usuario que registro</th>
+                                    <td>@(string.IsNullOrWhiteSpace(pago.UsuarioRegistro) ? "-" : pago.UsuarioRegistro)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <form asp-action="Anular" method="post">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="PagoID" type="hidden" />
+
+                        <div class="mb-4">
+                            <label asp-for="Motivo" class="form-label">Motivo de la anulacion</label>
+                            <input asp-for="Motivo" class="form-control" maxlength="255" required />
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-danger">Confirmar Anulacion</button>
+                            <a asp-action="Detalle" asp-route-id="@Model.PagoID" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>

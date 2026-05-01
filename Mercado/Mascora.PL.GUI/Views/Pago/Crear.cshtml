@@ -1,0 +1,107 @@
+@model Mercado.PL.GUI.DTO.Request.PagoRequest
+@using Mercado.BL.BE
+
+@{
+    ViewData["Title"] = "Registrar Pago";
+    var deuda = ViewBag.Deuda as DeudaBE;
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">Buscar Deuda</h2>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <form asp-action="BuscarDeuda" method="get">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-8">
+                            <label asp-for="CodigoDeuda" class="form-label">CodigoDeuda</label>
+                            <input asp-for="CodigoDeuda" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">Buscar Deuda</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @if (deuda != null)
+        {
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="card-title h4 mb-4">Registrar Pago</h3>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">CodigoDeuda</label>
+                            <input class="form-control" value="@deuda.CodigoDeuda" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Monto</label>
+                            <input class="form-control" value="@deuda.Monto.ToString("0.00")" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Concepto</label>
+                            <input class="form-control" value="@(deuda.ConceptoCobro?.Nombre ?? "-")" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Puesto</label>
+                            <input class="form-control" value="@(deuda.Puesto?.CodigoPuesto ?? "-")" readonly />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Socio</label>
+                            <input class="form-control" value="@ObtenerNombreSocio(deuda.Socio)" readonly />
+                        </div>
+                    </div>
+
+                    <form asp-action="Crear" method="post">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="CodigoDeuda" type="hidden" value="@deuda.CodigoDeuda" />
+
+                        <div class="mb-3">
+                            <label asp-for="MedioPago" class="form-label">MedioPago</label>
+                            <select asp-for="MedioPago" class="form-select">
+                                <option value="">-- Seleccione --</option>
+                                <option value="EFECTIVO">EFECTIVO</option>
+                                <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                                <option value="YAPE">YAPE</option>
+                                <option value="PLIN">PLIN</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="NumeroOperacion" class="form-label">NumeroOperacion</label>
+                            <input asp-for="NumeroOperacion" class="form-control" />
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">Registrar Pago</button>
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+    private static string ObtenerNombreSocio(SocioBE? socio)
+    {
+        if (socio == null)
+            return "-";
+
+        var nombreCompleto = string.Join(" ", new[] { socio.Nombres, socio.Apellidos }
+            .Where(valor => !string.IsNullOrWhiteSpace(valor)));
+
+        return string.IsNullOrWhiteSpace(nombreCompleto) ? "-" : nombreCompleto;
+    }
+}

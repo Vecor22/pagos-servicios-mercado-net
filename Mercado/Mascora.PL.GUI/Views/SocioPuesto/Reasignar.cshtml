@@ -1,0 +1,61 @@
+@model Mercado.PL.GUI.DTO.Request.SocioPuestoReasignacionRequest
+
+@{
+    ViewData["Title"] = "Reasignar Puesto";
+    var socios = ViewBag.Socios as List<Mercado.BL.BE.SocioBE>;
+    var puestos = ViewBag.Puestos as List<Mercado.BL.BE.PuestoBE>;
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">Reasignar Puesto</h2>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <form asp-action="Reasignar" method="post">
+                    <div class="mb-3">
+                        <label asp-for="CodigoPuesto" class="form-label">Puesto</label>
+                        <select asp-for="CodigoPuesto" class="form-select">
+                            <option value="">-- Seleccione un puesto --</option>
+                            @if (puestos != null)
+                            {
+                                @foreach (var puesto in puestos)
+                                {
+                                    <option value="@puesto.CodigoPuesto">@puesto.CodigoPuesto</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="CodigoSocio" class="form-label">Nuevo Socio</label>
+                        <select asp-for="CodigoSocio" class="form-select">
+                            <option value="">-- Seleccione un socio --</option>
+                            @if (socios != null)
+                            {
+                                @foreach (var socio in socios)
+                                {
+                                    <option value="@socio.CodigoSocio">
+                                        @($"{socio.Nombres} {socio.Apellidos}")
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿@model List<Mercado.PL.GUI.DTO.Response.UsuarioResponse>
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Usuarios</h2>
+    <a asp-action="Crear" class="btn btn-primary">Nuevo Usuario</a>
+</div>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Foto</th>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th style="width: 180px;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.UsuarioID</td>
+                <td>@u.Username</td>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(u.FotoUrl))
+                    {
+                        <img src="@u.FotoUrl" alt="Foto de @u.NombreCompleto" class="img-thumbnail" style="width: 64px; height: 64px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Sin foto</span>
+                    }
+                </td>
+                <td>@u.NombreCompleto</td>
+                <td>@u.Rol</td>
+                <td>
+                    <span class="badge @(u.Estado == "ACTIVO" ? "bg-success" : "bg-secondary")">
+                        @u.Estado
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@u.UsuarioID" class="btn btn-sm btn-warning">Editar</a>
+
+                    @if (u.Estado == "ACTIVO")
+                    {
+                        <a asp-action="CambiarEstado" asp-route-id="@u.UsuarioID" asp-route-estado="INACTIVO" class="btn btn-sm btn-danger">Desactivar</a>
+                    }
+                    else
+                    {
+                        <a asp-action="CambiarEstado" asp-route-id="@u.UsuarioID" asp-route-estado="ACTIVO" class="btn btn-sm btn-success">Activar</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

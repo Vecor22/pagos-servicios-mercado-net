@@ -1,0 +1,46 @@
+@model List<Mercado.PL.GUI.DTO.Response.RolResponse>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Listado de Roles</h2>
+            <a asp-action="Crear" class="btn btn-primary">Nuevo Rol</a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Activo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var rol in Model)
+                            {
+                                <tr>
+                                    <td>@rol.RolID</td>
+                                    <td>@rol.Nombre</td>
+                                    <td>@rol.Descripcion</td>
+                                    <td>@(rol.Activo ? "Sí" : "No")</td>
+                                    <td>
+                                        <a asp-action="Editar" asp-route-id="@rol.RolID" class="btn btn-warning btn-sm">Editar</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+@model Mercado.PL.GUI.DTO.Request.DeudaRequest
+
+@{
+    ViewData["Title"] = "Crear Deuda";
+    var conceptos = ViewBag.Conceptos as List<Mercado.BL.BE.ConceptoCobroBE>;
+    var puestos = ViewBag.Puestos as List<Mercado.BL.BE.PuestoBE>;
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">Crear Deuda</h2>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <form asp-action="Crear" method="post">
+                    <div class="mb-3">
+                        <label asp-for="ConceptoCobroID" class="form-label">ConceptoCobro</label>
+                        <select asp-for="ConceptoCobroID" class="form-select">
+                            <option value="">-- Seleccione un concepto --</option>
+                            @if (conceptos != null)
+                            {
+                                @foreach (var concepto in conceptos)
+                                {
+                                    <option value="@concepto.ConceptoCobroID">@concepto.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TipoGeneracion" class="form-label">TipoGeneracion</label>
+                        <select asp-for="TipoGeneracion" class="form-select" id="tipoGeneracion">
+                            <option value="">-- Seleccione --</option>
+                            <option value="INDIVIDUAL">INDIVIDUAL</option>
+                            <option value="REPARTIBLE">REPARTIBLE</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3" id="puestoContainer">
+                        <label asp-for="CodigoPuesto" class="form-label">Puesto</label>
+                        <select asp-for="CodigoPuesto" class="form-select" id="codigoPuesto">
+                            <option value="">-- Seleccione un puesto --</option>
+                            @if (puestos != null)
+                            {
+                                @foreach (var puesto in puestos)
+                                {
+                                    <option value="@puesto.CodigoPuesto">@puesto.CodigoPuesto</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="">No hay puestos disponibles</option>
+                            }
+                        </select>
+                        <small class="text-muted">Seleccione un puesto cuando el tipo de generacion sea INDIVIDUAL.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Monto" class="form-label">Monto</label>
+                        <input asp-for="Monto" class="form-control" type="number" step="0.01" min="1" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Observacion" class="form-label">Observacion</label>
+                        <input asp-for="Observacion" class="form-control" />
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tipoGeneracion = document.getElementById("tipoGeneracion");
+        const puestoContainer = document.getElementById("puestoContainer");
+        const codigoPuesto = document.getElementById("codigoPuesto");
+
+        function togglePuesto() {
+            const esIndividual = tipoGeneracion.value === "INDIVIDUAL";
+            puestoContainer.style.opacity = esIndividual ? "1" : "0.65";
+            codigoPuesto.disabled = !esIndividual;
+
+            if (!esIndividual) {
+                codigoPuesto.value = "";
+            }
+        }
+
+        tipoGeneracion.addEventListener("change", togglePuesto);
+        togglePuesto();
+    });
+</script>

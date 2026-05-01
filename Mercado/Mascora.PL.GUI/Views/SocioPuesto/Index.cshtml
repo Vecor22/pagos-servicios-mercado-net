@@ -1,0 +1,62 @@
+@model List<Mercado.PL.GUI.DTO.Response.SocioPuestoResponse>
+
+@{
+    ViewData["Title"] = "Socio-Puesto";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Asignaciones Socio-Puesto</h2>
+            <div class="d-flex gap-2">
+                <a asp-action="Asignar" class="btn btn-primary">Asignar Socio a Puesto</a>
+                <a asp-action="Reasignar" class="btn btn-warning">Reasignar</a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>CodigoSocio</th>
+                                <th>NombreSocio</th>
+                                <th>DNI</th>
+                                <th>CodigoPuesto</th>
+                                <th>FechaAsignacion</th>
+                                <th>AsignadoPor</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.CodigoSocio</td>
+                                        <td>@item.NombreSocio</td>
+                                        <td>@item.Dni</td>
+                                        <td>@item.CodigoPuesto</td>
+                                        <td>@item.FechaAsignacion.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@(string.IsNullOrWhiteSpace(item.AsignadoPor) ? "-" : item.AsignadoPor)</td>
+                                        <td>
+                                            <a asp-action="Reasignar" class="btn btn-warning btn-sm">Reasignar</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="7" class="text-center">No hay asignaciones registradas.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

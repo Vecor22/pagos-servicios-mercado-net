@@ -1,0 +1,61 @@
+﻿@model Mercado.PL.GUI.DTO.Request.UsuarioRequest
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+    var roles = ViewBag.Roles as List<Mercado.BL.BE.RolBE>;
+}
+
+<h2 class="mb-4">Editar Usuario</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Editar" method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
+    <input type="hidden" name="id" value="@ViewBag.UsuarioID" />
+    <input asp-for="FotoUrl" type="hidden" />
+
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input asp-for="Username" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Nombre Completo</label>
+        <input asp-for="NombreCompleto" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FotoArchivo" class="form-label">Foto</label>
+        <input asp-for="FotoArchivo" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp,image/*" />
+        <small class="text-muted">Seleccione una nueva imagen solo si desea reemplazar la actual.</small>
+        @if (!string.IsNullOrWhiteSpace(Model.FotoUrl))
+        {
+            <div class="mt-3">
+                <div class="mb-2">Foto actual</div>
+                <img src="@Model.FotoUrl" alt="Foto actual" class="img-thumbnail" style="max-height: 180px;" />
+            </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Rol</label>
+        <select asp-for="RolID" class="form-select" required>
+            <option value="">-- Seleccione --</option>
+            @foreach (var rol in roles)
+            {
+                <option value="@rol.RolID" selected="@(rol.RolID == Model.RolID)">
+                    @rol.Nombre
+                </option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>

@@ -1,0 +1,149 @@
+@model List<Mercado.PL.GUI.DTO.Response.DeudaResponse>
+
+@{
+    ViewData["Title"] = "Deudas";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Deudas</h2>
+            <a asp-action="Crear" class="btn btn-primary">Nueva Deuda</a>
+        </div>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["Error"]
+            </div>
+        }
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form method="get" asp-action="Index">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label">Estado</label>
+                            <select name="estado" class="form-select">
+                                <option value="">-- Todos --</option>
+                                @if (ViewBag.Estado == "PENDIENTE")
+                                {
+                                    <option value="PENDIENTE" selected>PENDIENTE</option>
+                                }
+                                else
+                                {
+                                    <option value="PENDIENTE">PENDIENTE</option>
+                                }
+                                @if (ViewBag.Estado == "PAGADA")
+                                {
+                                    <option value="PAGADA" selected>PAGADA</option>
+                                }
+                                else
+                                {
+                                    <option value="PAGADA">PAGADA</option>
+                                }
+                                @if (ViewBag.Estado == "EXONERADA")
+                                {
+                                    <option value="EXONERADA" selected>EXONERADA</option>
+                                }
+                                else
+                                {
+                                    <option value="EXONERADA">EXONERADA</option>
+                                }
+                                @if (ViewBag.Estado == "DISTRIBUIDA")
+                                {
+                                    <option value="DISTRIBUIDA" selected>DISTRIBUIDA</option>
+                                }
+                                else
+                                {
+                                    <option value="DISTRIBUIDA">DISTRIBUIDA</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Fecha Inicio</label>
+                            <input type="date" name="fechaInicio" class="form-control" value="@ViewBag.FechaInicio" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Fecha Fin</label>
+                            <input type="date" name="fechaFin" class="form-control" value="@ViewBag.FechaFin" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">CodigoPuesto</label>
+                            <input type="text" name="codigoPuesto" class="form-control" value="@ViewBag.CodigoPuesto" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">CodigoDeuda</label>
+                            <input type="text" name="codigoDeuda" class="form-control" value="@ViewBag.CodigoDeuda" />
+                        </div>
+                        <div class="col-12 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">Filtrar</button>
+                            <a asp-action="Index" class="btn btn-primary">Limpiar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>CodigoDeuda</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                                <th>TipoGeneracion</th>
+                                <th>Concepto</th>
+                                <th>CodigoPuesto</th>
+                                <th>Socio</th>
+                                <th>FechaGeneracion</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var deuda in Model)
+                                {
+                                    var badgeClass = deuda.Estado == "PAGADA"
+                                        ? "bg-success"
+                                        : deuda.Estado == "EXONERADA"
+                                            ? "bg-danger"
+                                            : "bg-warning text-dark";
+
+                                    <tr>
+                                        <td>@deuda.CodigoDeuda</td>
+                                        <td>@deuda.Monto.ToString("0.00")</td>
+                                        <td>
+                                            <span class="badge @badgeClass">@deuda.Estado</span>
+                                        </td>
+                                        <td>@deuda.TipoGeneracion</td>
+                                        <td>@deuda.Concepto</td>
+                                        <td>@(string.IsNullOrWhiteSpace(deuda.CodigoPuesto) ? "-" : deuda.CodigoPuesto)</td>
+                                        <td>@(string.IsNullOrWhiteSpace(deuda.Socio) ? "-" : deuda.Socio)</td>
+                                        <td>@deuda.FechaGeneracion.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>
+                                            <a asp-action="Detalle" asp-route-id="@deuda.DeudaID" class="btn btn-warning btn-sm">Ver Detalle</a>
+                                            @if (deuda.Estado == "PENDIENTE")
+                                            {
+                                                <a asp-action="Exonerar" asp-route-id="@deuda.DeudaID" class="btn btn-danger btn-sm">Exonerar</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="9" class="text-center">No hay deudas registradas.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
