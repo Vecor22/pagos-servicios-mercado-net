@@ -14,8 +14,9 @@
     </div>
 }
 
-<form asp-action="Editar" method="post" class="card p-4 shadow-sm">
+<form asp-action="Editar" method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
     <input type="hidden" name="id" value="@ViewBag.UsuarioID" />
+    <input asp-for="FotoUrl" type="hidden" />
 
     <div class="mb-3">
         <label class="form-label">Username</label>
@@ -28,8 +29,16 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Foto URL</label>
-        <input asp-for="FotoUrl" class="form-control" />
+        <label asp-for="FotoArchivo" class="form-label">Foto</label>
+        <input asp-for="FotoArchivo" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp,image/*" />
+        <small class="text-muted">Seleccione una nueva imagen solo si desea reemplazar la actual.</small>
+        @if (!string.IsNullOrWhiteSpace(Model.FotoUrl))
+        {
+            <div class="mt-3">
+                <div class="mb-2">Foto actual</div>
+                <img src="@Model.FotoUrl" alt="Foto actual" class="img-thumbnail" style="max-height: 180px;" />
+            </div>
+        }
     </div>
 
     <div class="mb-3">

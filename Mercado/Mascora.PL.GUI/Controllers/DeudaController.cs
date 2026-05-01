@@ -15,29 +15,9 @@ namespace Mercado.PL.GUI.Controllers
         private readonly ConceptoCobroModel conceptoCobroModel = new ConceptoCobroModel();
         private readonly PuestoModel puestoModel = new PuestoModel();
 
-        public IActionResult Index(string? estado, DateTime? fechaInicio, DateTime? fechaFin, string? codigoPuesto)
+        public IActionResult Index(string? estado, DateTime? fechaInicio, DateTime? fechaFin, string? codigoPuesto, string? codigoDeuda)
         {
             var deudas = deudaModel.Listar();
-
-            if (!string.IsNullOrWhiteSpace(estado))
-                deudas = deudas
-                    .Where(d => string.Equals(d.Estado, estado.Trim(), StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-
-            if (fechaInicio.HasValue)
-                deudas = deudas
-                    .Where(d => d.FechaGeneracion.Date >= fechaInicio.Value.Date)
-                    .ToList();
-
-            if (fechaFin.HasValue)
-                deudas = deudas
-                    .Where(d => d.FechaGeneracion.Date <= fechaFin.Value.Date)
-                    .ToList();
-
-            if (!string.IsNullOrWhiteSpace(codigoPuesto))
-                deudas = deudas
-                    .Where(d => string.Equals(d.Puesto?.CodigoPuesto, codigoPuesto.Trim(), StringComparison.OrdinalIgnoreCase))
-                    .ToList();
 
             var datosDeuda = ObtenerDatosDeuda();
 
@@ -45,10 +25,36 @@ namespace Mercado.PL.GUI.Controllers
                 .Select(d => MapearDeudaResponse(d, datosDeuda.TryGetValue(d.DeudaID, out var detalle) ? detalle : null))
                 .ToList();
 
+            if (!string.IsNullOrWhiteSpace(estado))
+                response = response
+                    .Where(d => string.Equals(d.Estado, estado.Trim(), StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+            if (fechaInicio.HasValue)
+                response = response
+                    .Where(d => d.FechaGeneracion.Date >= fechaInicio.Value.Date)
+                    .ToList();
+
+            if (fechaFin.HasValue)
+                response = response
+                    .Where(d => d.FechaGeneracion.Date <= fechaFin.Value.Date)
+                    .ToList();
+
+            if (!string.IsNullOrWhiteSpace(codigoPuesto))
+                response = response
+                    .Where(d => string.Equals(d.CodigoPuesto, codigoPuesto.Trim(), StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+            if (!string.IsNullOrWhiteSpace(codigoDeuda))
+                response = response
+                    .Where(d => string.Equals(d.CodigoDeuda, codigoDeuda.Trim(), StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
             ViewBag.Estado = estado;
             ViewBag.FechaInicio = fechaInicio?.ToString("yyyy-MM-dd");
             ViewBag.FechaFin = fechaFin?.ToString("yyyy-MM-dd");
             ViewBag.CodigoPuesto = codigoPuesto;
+            ViewBag.CodigoDeuda = codigoDeuda;
 
             return View(response);
         }

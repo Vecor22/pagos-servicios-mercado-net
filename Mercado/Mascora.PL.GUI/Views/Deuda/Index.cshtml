@@ -60,21 +60,25 @@
                                 }
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="form-label">Fecha Inicio</label>
                             <input type="date" name="fechaInicio" class="form-control" value="@ViewBag.FechaInicio" />
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="form-label">Fecha Fin</label>
                             <input type="date" name="fechaFin" class="form-control" value="@ViewBag.FechaFin" />
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="form-label">CodigoPuesto</label>
                             <input type="text" name="codigoPuesto" class="form-control" value="@ViewBag.CodigoPuesto" />
                         </div>
+                        <div class="col-md-2">
+                            <label class="form-label">CodigoDeuda</label>
+                            <input type="text" name="codigoDeuda" class="form-control" value="@ViewBag.CodigoDeuda" />
+                        </div>
                         <div class="col-12 d-flex gap-2">
                             <button type="submit" class="btn btn-primary">Filtrar</button>
-                            <a asp-action="Index" class="btn btn-secondary">Limpiar</a>
+                            <a asp-action="Index" class="btn btn-primary">Limpiar</a>
                         </div>
                     </div>
                 </form>
@@ -121,10 +125,10 @@
                                         <td>@(string.IsNullOrWhiteSpace(deuda.Socio) ? "-" : deuda.Socio)</td>
                                         <td>@deuda.FechaGeneracion.ToString("dd/MM/yyyy HH:mm")</td>
                                         <td>
-                                            <a asp-action="Detalle" asp-route-id="@deuda.DeudaID" class="btn btn-info btn-sm">Ver Detalle</a>
+                                            <a asp-action="Detalle" asp-route-id="@deuda.DeudaID" class="btn btn-warning btn-sm">Ver Detalle</a>
                                             @if (deuda.Estado == "PENDIENTE")
                                             {
-                                                <a asp-action="Exonerar" asp-route-id="@deuda.DeudaID" class="btn btn-warning btn-sm">Exonerar</a>
+                                                <a asp-action="Exonerar" asp-route-id="@deuda.DeudaID" class="btn btn-danger btn-sm">Exonerar</a>
                                             }
                                         </td>
                                     </tr>

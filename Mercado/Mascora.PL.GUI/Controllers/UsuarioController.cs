@@ -14,6 +14,12 @@ namespace Mercado.PL.GUI.Controllers
     {
         private readonly UsuarioModel usuarioModel = new UsuarioModel();
         private readonly RolModel rolModel = new RolModel();
+        private readonly IWebHostEnvironment webHostEnvironment;
+
+        public UsuarioController(IWebHostEnvironment webHostEnvironment)
+        {
+            this.webHostEnvironment = webHostEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -45,6 +51,8 @@ namespace Mercado.PL.GUI.Controllers
         {
             try
             {
+                request.FotoUrl = GuardarFoto(request.FotoArchivo);
+
                 UsuarioBE usuario = new UsuarioBE
                 {
                     Username = request.Username,
@@ -94,6 +102,15 @@ namespace Mercado.PL.GUI.Controllers
         {
             try
             {
+                var usuarioActual = usuarioModel.BuscarPorId(id);
+
+                if (usuarioActual == null)
+                    return NotFound();
+
+                request.FotoUrl = request.FotoArchivo != null
+                    ? GuardarFoto(request.FotoArchivo)
+                    : usuarioActual.FotoUrl;
+
                 UsuarioBE usuario = new UsuarioBE
                 {
                     UsuarioID = id,
@@ -133,6 +150,34 @@ namespace Mercado.PL.GUI.Controllers
                 sb.Append(b.ToString("x2"));
 
             return sb.ToString();
+        }
+
+        private string? GuardarFoto(IFormFile? fotoArchivo)
+        {
+            if (fotoArchivo == null || fotoArchivo.Length == 0)
+                return null;
+
+            var extension = Path.GetExtension(fotoArchivo.FileName).ToLowerInvariant();
+            var extensionesPermitidas = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+
+            if (!extensionesPermitidas.Contains(extension))
+                throw new Exception("La foto debe estar en formato JPG, JPEG, PNG o WEBP.");
+
+            const long maxBytes = 5 * 1024 * 1024;
+
+            if (fotoArchivo.Length > maxBytes)
+                throw new Exception("La foto no puede superar los 5 MB.");
+
+            var carpetaUploads = Path.Combine(webHostEnvironment.WebRootPath, "uploads", "usuarios");
+            Directory.CreateDirectory(carpetaUploads);
+
+            var nombreArchivo = $"{Guid.NewGuid():N}{extension}";
+            var rutaArchivo = Path.Combine(carpetaUploads, nombreArchivo);
+
+            using var stream = new FileStream(rutaArchivo, FileMode.Create);
+            fotoArchivo.CopyTo(stream);
+
+            return $"/uploads/usuarios/{nombreArchivo}";
         }
     }
 }

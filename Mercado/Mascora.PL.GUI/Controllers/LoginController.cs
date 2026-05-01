@@ -27,7 +27,10 @@ namespace Mercado.PL.GUI.Controllers
 
             if (!response.IsSuccessStatusCode)
             {
-                ViewBag.Error = "Usuario o contraseña incorrectos.";
+                var mensaje = await response.Content.ReadAsStringAsync();
+                ViewBag.Error = string.IsNullOrWhiteSpace(mensaje)
+                    ? "Usuario o contraseña incorrectos."
+                    : mensaje.Trim('"');
                 return View();
             }
 

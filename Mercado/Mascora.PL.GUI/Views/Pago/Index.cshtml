@@ -62,7 +62,7 @@
                         </div>
                         <div class="col-12 d-flex gap-2">
                             <button type="submit" class="btn btn-primary">Filtrar</button>
-                            <a asp-action="Index" class="btn btn-secondary">Limpiar</a>
+                            <a asp-action="Index" class="btn btn-primary">Limpiar</a>
                         </div>
                     </div>
                 </form>
@@ -112,8 +112,8 @@
                                         <td>@pago.FechaPago.ToString("dd/MM/yyyy HH:mm")</td>
                                         <td>
                                             <div class="d-flex flex-wrap gap-2">
-                                                <a asp-action="Detalle" asp-route-id="@pago.PagoID" class="btn btn-info btn-sm">Ver Detalle</a>
-                                                <a asp-controller="Comprobante" asp-action="Detalle" asp-route-pagoId="@pago.PagoID" class="btn btn-secondary btn-sm">Ver Comprobante</a>
+                                                <a asp-action="Detalle" asp-route-id="@pago.PagoID" class="btn btn-warning btn-sm">Ver Detalle</a>
+                                                <a asp-controller="Comprobante" asp-action="Detalle" asp-route-pagoId="@pago.PagoID" class="btn btn-success btn-sm">Ver Comprobante</a>
                                                 @if (pago.Estado == "REGISTRADO")
                                                 {
                                                     <a asp-action="Anular" asp-route-id="@pago.PagoID" class="btn btn-danger btn-sm">Anular</a>

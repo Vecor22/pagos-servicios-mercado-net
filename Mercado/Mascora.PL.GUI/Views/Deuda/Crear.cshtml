@@ -43,9 +43,9 @@
                         </select>
                     </div>
 
-                    <div class="mb-3" id="puestoContainer" style="display:none;">
+                    <div class="mb-3" id="puestoContainer">
                         <label asp-for="CodigoPuesto" class="form-label">Puesto</label>
-                        <select asp-for="CodigoPuesto" class="form-select">
+                        <select asp-for="CodigoPuesto" class="form-select" id="codigoPuesto">
                             <option value="">-- Seleccione un puesto --</option>
                             @if (puestos != null)
                             {
@@ -54,7 +54,12 @@
                                     <option value="@puesto.CodigoPuesto">@puesto.CodigoPuesto</option>
                                 }
                             }
+                            else
+                            {
+                                <option value="">No hay puestos disponibles</option>
+                            }
                         </select>
+                        <small class="text-muted">Seleccione un puesto cuando el tipo de generacion sea INDIVIDUAL.</small>
                     </div>
 
                     <div class="mb-3">
@@ -81,9 +86,16 @@
     document.addEventListener("DOMContentLoaded", function () {
         const tipoGeneracion = document.getElementById("tipoGeneracion");
         const puestoContainer = document.getElementById("puestoContainer");
+        const codigoPuesto = document.getElementById("codigoPuesto");
 
         function togglePuesto() {
-            puestoContainer.style.display = tipoGeneracion.value === "INDIVIDUAL" ? "block" : "none";
+            const esIndividual = tipoGeneracion.value === "INDIVIDUAL";
+            puestoContainer.style.opacity = esIndividual ? "1" : "0.65";
+            codigoPuesto.disabled = !esIndividual;
+
+            if (!esIndividual) {
+                codigoPuesto.value = "";
+            }
         }
 
         tipoGeneracion.addEventListener("change", togglePuesto);
